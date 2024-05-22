@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery with Filters and Preview</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.filter-buttons {
+    margin: 20px 0;
+}
+
+.filter-buttons button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.filter-buttons button:hover {
+    background-color: #45a049;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.photo {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: none; /* Hide all photos by default */
+}
+
+.photo img {
+    width: 100%;
+    height: 150px; /* Set a fixed height */
+    object-fit: cover; /* Maintain aspect ratio and cover the area */
+    display: block;
+    cursor: pointer; /* Make the images look clickable */
+}
+
+.show {
+    display: block; /* Show photos with the 'show' class */
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image */
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content, #caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+  </style>
+    <script>
+      function filterSelection(category) {
+  var photos, i;
+  photos = document.getElementsByClassName("photo");
+  if (category == "all") category = "";
+  for (i = 0; i < photos.length; i++) {
+    removeClass(photos[i], "show");
+    if (photos[i].className.indexOf(category) > -1) addClass(photos[i], "show");
+  }
+}
+
+function addClass(element, name) {
+  var arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (var i = 0; i < arr2.length; i++) {
+    if (arr1.indexOf(arr2[i]) == -1) {
+      element.className += " " + arr2[i];
+    }
+  }
+}
+
+function removeClass(element, name) {
+  var arr1, arr2;
+  arr1 = element.className.split(" ");
+  arr2 = name.split(" ");
+  for (var i = 0; i < arr2.length; i++) {
+    while (arr1.indexOf(arr2[i]) > -1) {
+      arr1.splice(arr1.indexOf(arr2[i]), 1);
+    }
+  }
+  element.className = arr1.join(" ");
+}
+
+// Show all photos by default
+filterSelection("all");
+
+// Modal functionality
+function openModal(imgElement) {
+  var modal = document.getElementById("myModal");
+  var modalImg = document.getElementById("img01");
+  var captionText = document.getElementById("caption");
+  modal.style.display = "block";
+  modalImg.src = imgElement.src;
+  captionText.innerHTML = imgElement.alt;
+}
+
+function closeModal() {
+  var modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
+
+    </script>
+</head>
+
+<body>
+
+  <div class="filter-buttons">
+    <button onclick="filterSelection('all')"> Show all</button>
+    <button onclick="filterSelection('nature')"> Nature</button>
+    <button onclick="filterSelection('city')"> City</button>
+    <button onclick="filterSelection('people')"> People</button>
+  </div>
+
+  <div class="gallery">
+    <div class="photo nature"><img src="https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 1" onclick="openModal(this)"></div>
+    <div class="photo city"><img src="https://images.pexels.com/photos/169647/pexels-photo-169647.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 2" onclick="openModal(this)"></div>
+    <div class="photo people"><img src="https://images.pexels.com/photos/925786/pexels-photo-925786.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 3" onclick="openModal(this)"></div>
+    <div class="photo nature"><img src="https://images.pexels.com/photos/1547813/pexels-photo-1547813.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 4" onclick="openModal(this)"></div>
+    <div class="photo city"><img src="https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 5" onclick="openModal(this)"></div>
+    <div class="photo people"><img src="https://images.pexels.com/photos/837358/pexels-photo-837358.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 6" onclick="openModal(this)"></div>
+    <div class="photo nature"><img src="https://images.pexels.com/photos/1770809/pexels-photo-1770809.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 7" onclick="openModal(this)"></div>
+    <div class="photo city"><img src="https://images.pexels.com/photos/773471/pexels-photo-773471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Photo 8" onclick="openModal(this)"></div>
+  </div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
